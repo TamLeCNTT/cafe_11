@@ -10,6 +10,7 @@ import Header from '../layout/Header';
 import productService from '../../service/productService';
 import odersaveService from '../../service/odersaveService';
 import cashService from '../../service/cashService';
+import OderFireBaseService from '../../service/OderFireBaseService';
 const Thongke = () => {
     const [ngay, setngay] = useState(new Date().toLocaleDateString('en-CA'));
     const [ngaybyly, setngaybyly] = useState(new Date().toLocaleDateString('en-CA'));
@@ -77,6 +78,42 @@ const Thongke = () => {
 
 
 
+        }).catch(err => {
+            productService.getAllfirebase().then(
+                res => {
+                    const results2 = Object.values(res.data).filter(element => {
+                        return element !== null && element !== undefined;
+                      });
+                    console.log(results2)
+                    
+
+
+
+
+                    results2.map((item, index) => {
+                        lablenew.push(item.name)
+                        listidnew.push(item.productID)
+                        if (item.categoryId == 1) {
+        
+                            lablenhap.push(item.name)
+                            soluongkhonew.push(item.SoLuong)
+                        }
+        
+                    })
+                    soluonglybanrabyngay(datenew, results2)
+                    
+                    soluonglybanrabythang(datenew, results2)
+                    setsoluongkho(soluongkhonew)
+                    setlableget(lablenhap)
+                    setlable(lablenew)
+                    setlistid(listidnew)
+                    setlistsp(res.data)
+                    soluongbanrabyngay(datenew, listidnew)
+
+                    
+                }
+            )
+
         })
         const options = [];
 
@@ -117,6 +154,23 @@ const Thongke = () => {
                 setsoluonglytheongay(soluongbannew)
             }
 
+        ).catch(
+            err => {
+                cashService.getbyday(datenew).then(
+                    res => {
+                         let newarry=[]
+                        Object.values(res.data).map((item, index) => {
+                            console.log(item.data)
+                            newarry.push(...item.data)
+                        })
+                       
+                        doangthunew = newarry.reduce((a, v) => a = a + (v.soluong * findproduct(list, v.productId).price), 0)
+                        soluongbannew = newarry.reduce((a, v) => a = a + v.soluong, 0)
+                        setdttheongay(doangthunew)
+                        setsoluonglytheongay(soluongbannew)
+                    }
+                )
+            }
         )
     }
     const soluonglybanrabythang = (datenew, list) => {
@@ -131,6 +185,31 @@ const Thongke = () => {
                 setsoluonglytheothang(soluongbannew)
             }
 
+        ).catch(
+            err => {
+                cashService.getAll().then(
+                    res => {
+                        let newarry = []
+                        console.log(Object.values(res.data))
+                        Object.values(res.data).map((item, index) => {
+                          
+                            Object.values(item).map((conten, vt) => {
+                               if(new Date(conten.date).getMonth()==new Date(datenew).getMonth()&& new Date(conten.date).getFullYear()==new Date(datenew).getFullYear())
+                               {
+                                 
+                                       newarry.push(...conten.data)
+                               
+                                    }
+                            })
+                            doangthunew =newarry.reduce((a, v) => a = a + (v.soluong * (findproduct(list, v.productId).price)), 0)
+                            soluongbannew = newarry.reduce((a, v) => a = a + v.soluong, 0)
+                            setdttheothang(doangthunew)
+                            setsoluonglytheothang(soluongbannew)
+                                    
+                       })
+                    }
+                )
+            }
         )
     }
     const soluongbanrabyngay = (datenew, listidnew) => {
@@ -139,27 +218,7 @@ const Thongke = () => {
             ress => {
                 console.log(ress.data)
                 let list=[]
-                if (ress.data.length == 0) {
-                    cashService.getbyday(datenew).then(
-                        ress => {
-                            let newarry = []
-                            Object.values(ress.data).map((item, index) => {
-                                console.log(item.data)
-                                newarry.push(...item.data)
-                            })
-                            console.log(newarry)
-                            list = newarry
-                            listidnew.map((item, index) => {
-
-                                let sl = list.filter(e => e.productId == item)
-                                soluongbannew.push(sl.reduce((a, v) => a = a + v.soluong, 0))
-                            })
-                            setsoluongban(soluongbannew)
-                        }
-                    )
-                }
-                else {
-                    
+               
                 
                     list = ress.data
                     console.log(list)
@@ -169,9 +228,28 @@ const Thongke = () => {
                         soluongbannew.push(sl.reduce((a, v) => a = a + v.soluong, 0))
                     })
                     setsoluongban(soluongbannew)
-                }
-            }
+                            }
 
+        ).catch(
+            err => {
+                cashService.getbyday(datenew).then(
+                    ress => {
+                        let newarry = []
+                        Object.values(ress.data).map((item, index) => {
+                            console.log(item.data)
+                            newarry.push(...item.data)
+                        })
+                        console.log(newarry)
+                       let  list = newarry
+                        listidnew.map((item, index) => {
+
+                            let sl = list.filter(e => e.productId == item)
+                            soluongbannew.push(sl.reduce((a, v) => a = a + v.soluong, 0))
+                        })
+                        setsoluongban(soluongbannew)
+                    }
+                )
+            }
         )
     }
 
@@ -187,6 +265,34 @@ const Thongke = () => {
                 setsoluongban(soluongbannew)
             }
 
+        ).catch(
+            err => {
+                cashService.getAll().then(
+                    res => {
+                        let newarry = []
+                        console.log(Object.values(res.data))
+                        Object.values(res.data).map((item, index) => {
+                          
+                            Object.values(item).map((conten, vt) => {
+                               if(new Date(conten.date).getMonth()==new Date(datenew).getMonth()&& new Date(conten.date).getFullYear()==new Date(datenew).getFullYear())
+                               {
+                                 
+                                       newarry.push(...conten.data)
+                               
+                                    }
+                            })
+                            console.log(newarry,datenew)
+                            listidnew.map((item, index) => {
+
+                                let sl = newarry.filter(e => e.productId == item)
+                                soluongbannew.push(sl.reduce((a, v) => a = a + v.soluong, 0))
+                            })
+                            setsoluongban(soluongbannew)       
+                        })
+                       
+                    }
+                )
+            }
         )
     }
     const soluongbanrabyyear = (datenew, listidnew) => {
@@ -201,6 +307,34 @@ const Thongke = () => {
                 setsoluongban(soluongbannew)
             }
 
+        ).catch(
+            err => {
+                cashService.getAll().then(
+                    res => {
+                        let newarry = []
+                        console.log(Object.values(res.data))
+                        Object.values(res.data).map((item, index) => {
+                          
+                            Object.values(item).map((conten, vt) => {
+                               if( new Date(conten.date).getFullYear()==new Date(datenew).getFullYear())
+                               {
+                                 
+                                       newarry.push(...conten.data)
+                               
+                                    }
+                            })
+                            console.log(newarry,datenew)
+                            listidnew.map((item, index) => {
+
+                                let sl = newarry.filter(e => e.productId == item)
+                                soluongbannew.push(sl.reduce((a, v) => a = a + v.soluong, 0))
+                            })
+                            setsoluongban(soluongbannew)       
+                        })
+                       
+                    }
+                )
+            }
         )
     }
     const findproduct = (list, id) => {
@@ -231,12 +365,12 @@ const Thongke = () => {
         setyear(e.target.value)
     }
     const xem = () => {
-        let date = year + "-" + thang + "-" + ngay
+        let date = year + "-" + thang + "-01" 
         if (loai == 1)
             soluongbanrabyngay(getdate(ngay), listid)
         else
             if (loai == 2) {
-
+                console.log(date)
                 soluongbanrabymonth(date, listid)
             }
             else {
