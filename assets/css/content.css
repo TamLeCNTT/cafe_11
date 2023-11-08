@@ -1,0 +1,112 @@
+@charset "UTF-8";
+#hoadon {
+  /* Feature: css bill.
+  *  author: Thanh That.
+  *  Date: 19/09/2021
+  */
+}
+#hoadon img {
+  max-width: 100%;
+  display: block;
+}
+#hoadon .header {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  gap: 0 3rem;
+}
+#hoadon .header .img-logo {
+  width: 30%;
+}
+#hoadon .header .company {
+  -webkit-box-flex: 1;
+      -ms-flex: 1;
+          flex: 1;
+  font-size: 14px;
+}
+#hoadon .header .company span {
+  display: block;
+}
+#hoadon .header .company .header-title {
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-align: left;
+}
+#hoadon .header .company .address {
+  font-size: 10px;
+}
+#hoadon .header .company .address span {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: start;
+      -ms-flex-align: start;
+          align-items: start;
+}
+#hoadon .container {
+  max-width: 400px;
+  margin: 0 auto;
+  padding: 20px;
+}
+#hoadon .bill-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin-top: 20px;
+  font-size: 12px;
+}
+#hoadon .bill-table th,
+#hoadon .bill-table td {
+  border: 1px solid #ddd;
+  padding: 8px;
+  text-align: left;
+}
+#hoadon .bill-table th {
+  background-color: #f2f2f2;
+}
+#hoadon .total {
+  margin-top: 20px;
+  text-align: right;
+}
+#hoadon .footer {
+  margin-top: 16px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  gap: 0 30px;
+  font-size: 16px;
+}
+@media print {
+  #hoadon {
+    /* Thiết lập kích thước cho các phần tử khác trên trang */
+    /* Ẩn các đường viền và background mà bạn không muốn in ra */
+  }
+  #hoadon #hoadon {
+    width: 26mm; /* Độ rộng của giấy A10 */
+    height: 37mm; /* Độ cao của giấy A10 */
+    margin: 0;
+    padding: 0;
+    font-size: 12px;
+  }
+  #hoadon .container {
+    max-width: 100%;
+    margin: 0;
+    padding: 0;
+  }
+  #hoadon .header,
+  #hoadon .bill-table,
+  #hoadon .total {
+    font-size: 12px; /* Điều chỉnh kích thước chữ để vừa với giấy A10 */
+  }
+}

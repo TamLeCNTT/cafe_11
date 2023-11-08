@@ -1,0 +1,23 @@
+import { db } from "../config/firebase";
+import { set, ref, onValue, remove } from "firebase/database";
+import axios from "axios";
+import axiosClient from "./Main";
+const SCHEMA = "oder";
+class OderFireBaseService {
+  getAll() {
+    const url = `${SCHEMA}.json`;
+    return axiosClient.get(url);
+  }
+    update(data) {
+      console.log(data)
+    const url = `/${SCHEMA}/${data.id}.json`;
+    return axiosClient.patch(url, data);
+  }
+  delete(data) {
+    console.log(data)
+  const url = `/${SCHEMA}//${data.id}.json`;
+  return axiosClient.delete(url, data);
+}
+}
+
+export default new OderFireBaseService();

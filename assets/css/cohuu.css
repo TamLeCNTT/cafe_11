@@ -1,0 +1,9 @@
+.ngaybd {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+}
+.ngaybd label {
+  display: block;
+  width: 50%;
+}
