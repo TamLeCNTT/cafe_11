@@ -24,7 +24,7 @@ const Thongke = () => {
     const [doanhthu7y, setdoanhthu7] = useState(0);
     const [soluongdon7, setsoluongdon7] = useState(0);
     const [loai, setloai] = useState(1);
-
+    const [infirebase,setinfirebaese]=useState(false)
     const [label, setlable] = useState([])
     const [labelget, setlableget] = useState([])
     const [soluongkho, setsoluongkho] = useState([])
@@ -79,8 +79,10 @@ const Thongke = () => {
 
 
         }).catch(err => {
+            setinfirebaese(true)
             productService.getAllfirebase().then(
                 res => {
+                    
                     const results2 = Object.values(res.data).filter(element => {
                         return element !== null && element !== undefined;
                       });
@@ -163,7 +165,7 @@ const Thongke = () => {
                             console.log(item.data)
                             newarry.push(...item.data)
                         })
-                       
+                       console.log(newarry)
                         doangthunew = newarry.reduce((a, v) => a = a + (v.soluong * findproduct(list, v.productId).price), 0)
                         soluongbannew = newarry.reduce((a, v) => a = a + v.soluong, 0)
                         setdttheongay(doangthunew)
@@ -281,15 +283,16 @@ const Thongke = () => {
                                
                                     }
                             })
-                            console.log(newarry,datenew)
-                            listidnew.map((item, index) => {
-
-                                let sl = newarry.filter(e => e.productId == item)
-                                soluongbannew.push(sl.reduce((a, v) => a = a + v.soluong, 0))
-                            })
-                            setsoluongban(soluongbannew)       
+                                
                         })
-                       
+                        console.log(newarry,datenew)
+                        listidnew.map((item, index) => {
+
+                            let sl = newarry.filter(e => e.productId == item)
+                            soluongbannew.push(sl.reduce((a, v) => a = Number(a) + Number(v.soluong), 0))
+                        })
+                        
+                        setsoluongban(soluongbannew)   
                     }
                 )
             }
@@ -338,7 +341,10 @@ const Thongke = () => {
         )
     }
     const findproduct = (list, id) => {
-        let pro = list.filter(item => item.productID == id)
+        const results2 = Object.values(list).filter(element => {
+            return element !== null && element !== undefined;
+          });
+        let pro = results2.filter(item => item.productID == id)
 
         return pro[0]
     }
@@ -722,85 +728,89 @@ const Thongke = () => {
                                     </div>
                                 </div>
 
-
-                                <div className="col-xl-12 col-lg-12">
-                                    <div className="card shadow mb-4">
-                                        <div
-                                            className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
-                                            <h6 className="m-0 font-weight-bold text-primary"> <h4 style={{ color: "blue" }}> Thống kê hàng tồn kho </h4></h6>
-
-                                        </div>
-
-                                        <div className="card-body">
-                                            <div className="chart-area">
-                                                <div className="App" style={{ paddingTop: "10px" }}>
-
-                                                    {/* <div className='row' style={{ verticalAlign: "middle", textAlign: "center" }}>
-                                                        <div className='col-3'>
-
-                                                        </div>
-                                                        <div className='col-3 pading'>
-                                                            Chọn năm
-                                                        </div>
-                                                        <div className='col-2'>
-
-                                                        </div>
-
-                                                    </div> */}
-                                                    <Bar
-
-                                                        data={{
-                                                            labels: labelget,
-                                                            datasets: [
-
-                                                                {
-                                                                    label: "Số lượng tồn kho",
-
-                                                                    borderWidth: 1,
-
-                                                                    data: soluongkho
-                                                                },
-                                                                // {
-                                                                //     label: "Lợi nhuận",
-
-                                                                //     borderWidth: 1,
-
-                                                                //     data: loinhuan
-                                                                // }
-                                                            ]
-                                                        }}
-                                                        plugins={[ChartDataLabels]}
-                                                        options={{
-                                                            plugins: {
-                                                                datalabels: {
-                                                                    display: true,
-                                                                    font: {
-                                                                        size: 14,
-                                                                        weight: 'bold'
+                                {
+                                    !infirebase && (
+                                        <div className="col-xl-12 col-lg-12">
+                                        <div className="card shadow mb-4">
+                                            <div
+                                                className="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                                                <h6 className="m-0 font-weight-bold text-primary"> <h4 style={{ color: "blue" }}> Thống kê hàng tồn kho </h4></h6>
+    
+                                            </div>
+    
+                                            <div className="card-body">
+                                                <div className="chart-area">
+                                                    <div className="App" style={{ paddingTop: "10px" }}>
+    
+                                                        {/* <div className='row' style={{ verticalAlign: "middle", textAlign: "center" }}>
+                                                            <div className='col-3'>
+    
+                                                            </div>
+                                                            <div className='col-3 pading'>
+                                                                Chọn năm
+                                                            </div>
+                                                            <div className='col-2'>
+    
+                                                            </div>
+    
+                                                        </div> */}
+                                                        <Bar
+    
+                                                            data={{
+                                                                labels: labelget,
+                                                                datasets: [
+    
+                                                                    {
+                                                                        label: "Số lượng tồn kho",
+    
+                                                                        borderWidth: 1,
+    
+                                                                        data: soluongkho
                                                                     },
-                                                                    color: "black",
-
-                                                                    formatter: Math.round,
-
-                                                                    offset: -20,
-                                                                    align: "start"
+                                                                    // {
+                                                                    //     label: "Lợi nhuận",
+    
+                                                                    //     borderWidth: 1,
+    
+                                                                    //     data: loinhuan
+                                                                    // }
+                                                                ]
+                                                            }}
+                                                            plugins={[ChartDataLabels]}
+                                                            options={{
+                                                                plugins: {
+                                                                    datalabels: {
+                                                                        display: true,
+                                                                        font: {
+                                                                            size: 14,
+                                                                            weight: 'bold'
+                                                                        },
+                                                                        color: "black",
+    
+                                                                        formatter: Math.round,
+    
+                                                                        offset: -20,
+                                                                        align: "start"
+                                                                    }
+                                                                    ,
+                                                                    legend: { display: false }
+                                                                },
+                                                                legend: { display: false },
+                                                                title: {
+                                                                    display: true,
+                                                                    text: "Predicted world population (millions) in 2050"
                                                                 }
-                                                                ,
-                                                                legend: { display: false }
-                                                            },
-                                                            legend: { display: false },
-                                                            title: {
-                                                                display: true,
-                                                                text: "Predicted world population (millions) in 2050"
-                                                            }
-                                                        }}
-                                                    />
-
+                                                            }}
+                                                        />
+    
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
+                                    )
+}
+                               
                                 {
                                     tongban > 0 && (
                                         <div className="col-xl-6 col-lg-6">
