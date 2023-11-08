@@ -29,6 +29,7 @@ const Home = () => {
     const [sumCash, setSumcash] = useState(0)
     const [tongtiens, settongtiens] = useState(0)
     const [note, setnote] = useState('')
+    const [infirebase,setinfirebaese]=useState(false)
     let current = new Date()
     let date = `${current.getFullYear()}-${current.getMonth() + 1}-${current.getDate()}`
     const users = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
@@ -39,6 +40,7 @@ const Home = () => {
         let lst = listoder, ltt = [], listshows = []
         productService.getall().then(
             res => {
+                console.log(res.data)
                 setopt(res.data)
                
                 oderService.getall().then(resw => {
@@ -71,6 +73,10 @@ const Home = () => {
 
             }
         ).catch(err => {
+            setinfirebaese(true)
+            productService.getAllfirebase().then(res => {
+               setopt(Object.values(res.data))
+            })
             OderFireBaseService.getAll().then(
                 res => {
                     let newarry=[]
@@ -168,7 +174,11 @@ const Home = () => {
         setlistoder([...lst])
     }, [message]);
     const findproduct = (id) => {
-        let pro = options.filter(item => item.productID == id)
+        console.log(options)
+        const results2 = options.filter(element => {
+            return element !== null && element !== undefined;
+          });
+        let pro = results2.filter(item => item.productID!==null && item.productID  == id)
 
         return pro[0]
     }
@@ -213,7 +223,29 @@ const Home = () => {
                 setSumcash(0)
             }
 
-        })
+        }).catch(
+            err => {
+                OderFireBaseService.getbyId(e).then(res => {
+                    let data = Object.values(res.data)[0]
+                    console.log(data,options)
+                    if (data.length > 0) {
+                        listDaoder = data.filter(item => item.trangthai == 1).length > 0 ? data.filter(item => item.trangthai == 1) : data.filter(item => item.trangthai == 2)
+                        setContent(listDaoder)
+                        listDaoders = data.filter(item => item.trangthai == 3)
+                        setlistcash(listDaoders)
+                        setSumcash(data.reduce((a, v) => a = a + (v.soluong * findproduct(v.productId).price), 0))
+                    }
+                    else {
+                        setContent([]
+                        )
+                        setlistcash([])
+                        setSumcash(0)
+                    }
+                })
+
+                console.log(err)
+            }
+        )
 
         settable(e)
         setshow(true)
@@ -515,7 +547,10 @@ const Home = () => {
                                 </Modal.Title>
                             </Modal.Header>
                             <Modal.Body >
-                                <h1>Chọn món oder </h1>
+                                {
+                                    !infirebase && (
+                                        <>
+                                         <h1>Chọn món oder </h1>
                                 
                                 <input type="text" className="form-control  border-radius" placeholder='Ghi chú' onChange={(e) => changeNote(e)} value={note} />
 
@@ -527,6 +562,10 @@ const Home = () => {
                                     placeholder="Chọn đồ uống..."
                                     selected={singleSelections}
                                 />
+                                        </>
+                                    )
+                                }
+                               
 
                                 {
                                     listOdering && listOdering.length > 0 && (
@@ -548,10 +587,15 @@ const Home = () => {
                                                 Thành tiền
 
                                             </div>
-                                            <div className='col col-lg-2 border' style={{ textAlign: "center" }}>
+                                            {
+                                                !infirebase&&(
+                                                    <div className='col col-lg-2 border' style={{ textAlign: "center" }}>
 
 
-                                            </div>
+                                                    </div>
+                                                )
+                                            }
+                                          
                                         </div>
                                     )
                                 }
@@ -578,10 +622,14 @@ const Home = () => {
                                                         {item.product.price * item.soluong}
 
                                                     </div>
-                                                    <div onClick={() => deleteByIndex(index,1)} className='col col-lg-2 border trash' style={{ textAlign: "center" }}>
+                                                    {
+                                                        !infirebase && (
+                                                            <div onClick={() => deleteByIndex(index,1)} className='col col-lg-2 border trash' style={{ textAlign: "center" }}>
                                                      
-                                                        <i class="bi bi-trash"></i>
-                                                    </div>
+                                                            <i class="bi bi-trash"></i>
+                                                        </div>
+                                                        )
+                                                   }
                                                 </div>
                                             </>
                                         )
@@ -610,10 +658,15 @@ const Home = () => {
                                                 Thành tiền
 
                                             </div>
-                                            <div className='col col-lg-2 border' style={{ textAlign: "center" }}>
+                                            {
+                                                !infirebase && (
+                                                    <div className='col col-lg-2 border' style={{ textAlign: "center" }}>
 
 
-</div>
+                                                    </div>
+                                                   )
+                                            }
+                                           
                                         </div>
                                     )
                                 }
@@ -641,10 +694,15 @@ const Home = () => {
                                                         {findproduct(item.productId).price * item.soluong}
 
                                                     </div>
-                                                    <div onClick={() => deleteByIndex(index,3)} className='col col-lg-2 border trash' style={{ textAlign: "center" }}>
+                                                    {
+                                                        !infirebase && (
+                                                            <div onClick={() => deleteByIndex(index,3)} className='col col-lg-2 border trash' style={{ textAlign: "center" }}>
                                                      
                                                      <i class="bi bi-trash"></i>
                                                  </div>
+                                                           )
+                                                    }
+                                                    
                                                 </div>
                                             </>
                                         )
@@ -673,7 +731,7 @@ const Home = () => {
                                 <div className='row'>
                                     <div className='col col-lg-6'>
 
-                                        {listcash && listcash.length > 0 && listshow[table] && listshow[table].trangthai == 3 && (
+                                        { !infirebase&&listcash && listcash.length > 0 && listshow[table] && listshow[table].trangthai == 3 && (
 
                                             // <Print content={listcash} id={table} OnclickCash={OnclickCash} />
                                             <button className="btn btn-primary" onClick={() => OnclickCash()}>Oder</button>
@@ -685,7 +743,7 @@ const Home = () => {
 
                                     </div>
                                     {
-                                        listOdering && listOdering.length > 0 && (
+                                        !infirebase&& listOdering && listOdering.length > 0 && (
                                             <div className='col col-lg-6' style={{ textAlign: "right" }}>
                                                 <button className="btn btn-primary" onClick={() => OnclickOder()}>Oder</button>
                                             </div>

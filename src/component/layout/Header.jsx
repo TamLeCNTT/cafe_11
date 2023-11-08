@@ -42,9 +42,9 @@ const Header = (props) => {
     }, [])
     const logOut = () => {
         props.logout()
-        if (localStorage.getItem("users"))
+       
             toast.success("Tài khoản đã được đăng xuất ")
-        localStorage.clear()
+        sessionStorage.clear()
 
         navigate("/home")
     };
@@ -79,33 +79,26 @@ const Header = (props) => {
                                                     Thống kê
                                                 </NavLink>
                                             </NavDropdown.Item>
-                                            <NavDropdown.Item href="#action/3.3" className="hover">Something</NavDropdown.Item>
-                                            {/* <NavDropdown.Divider /> */}
-                                            <NavDropdown.Item href="#action/3.4" className="hover">
                                            
-                                            </NavDropdown.Item>
                                         </NavDropdown>)
                                     }
 
                                 </Nav>
                                 <Nav>
-                                    <Nav.Link href="#deets" className='test'>More deets</Nav.Link>
-                                    <Nav.Link eventKey={4} href="#memes" className='test'>
-                                        Dank memes
-                                    </Nav.Link>
-                                    <NavLink className="test" to="/user/login">
-                                                 Đăng nhập
-                                                </NavLink>
+                                    {
+                                        users ?
+                                        <NavLink className="test" onClick={()=>logOut()}>
+                                        Đăng xuất
+                                            </NavLink>
+                                            :
+                                            <NavLink className="test" to="/user/login">
+                                            Đăng nhập
+                                           </NavLink>
+                                    
+                                  }
+                                  
                                 </Nav>
-                                <Form className="d-flex">
-                                    <Form.Control
-                                        type="search"
-                                        placeholder="Search"
-                                        className="me-2"
-                                        aria-label="Search"
-                                    />
-                                    <Button variant="outline-success">Search</Button>
-                                </Form>
+                               
                             </Navbar.Collapse>
                         </Container>
                     </Navbar>

@@ -54,6 +54,7 @@ const Thongke = () => {
 
         let listidnew = []
         productService.getall().then(res => {
+            
             res.data.map((item, index) => {
                 lablenew.push(item.name)
                 listidnew.push(item.productID)
@@ -86,21 +87,19 @@ const Thongke = () => {
         }
         setlistyear(options)
 
-        cashService.getAll().then(
-            ress => {
-                let newarry=[]
-                Object.values(ress.data).map((item, index) => {
-                    Object.values(item).map((value, index) => {
-                        newarry.push(...value.data)
-                    })
+        // cashService.getAll().then(
+        //     ress => {
+        //         let newarry=[]
+        //         Object.values(ress.data).map((item, index) => {
+        //             Object.values(item).map((value, index) => {
+        //                 newarry.push(...value.data)
+        //             })
                    
-                })
-                console.log(newarry,Object.values(ress.data))
-            }
-        )
-        cashService.getAll().then(e => {
-    console.log(Object.values(e.data))
-})
+        //         })
+        //         console.log(newarry,Object.values(ress.data))
+        //     }
+        // )
+      
     }, [])
     const getdate = (today) => {
         today = new Date(today)

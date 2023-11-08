@@ -9,12 +9,17 @@ class OderFireBaseService {
     return axiosClient.get(url);
   }
     update(data) {
-      console.log(data)
+     
     const url = `/${SCHEMA}/${data.id}.json`;
     return axiosClient.patch(url, data);
   }
+  getbyId(id) {
+    
+  const url = `/${SCHEMA}/${id}.json`;
+  return axiosClient.get(url);
+}
   delete(data) {
-    console.log(data)
+   
   const url = `/${SCHEMA}//${data.id}.json`;
   return axiosClient.delete(url, data);
 }

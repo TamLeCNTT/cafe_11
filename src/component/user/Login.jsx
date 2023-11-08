@@ -22,7 +22,7 @@ const Login = (props) => {
 
 
 
-
+        userService.update({username:"khang",password:"khang",roleId:2})
 
     }, [])
     const ChangeUsername = (e) => {
@@ -34,21 +34,22 @@ const Login = (props) => {
     }
     const login = (e) => {
         let user = { username: username, password: password }
-        userService.login(user).then(res => {
-            console.log(res.data)
-            if (res.data) {
-                toast.success("Đăng nhập thành công")
-
-                sessionStorage.setItem("user", JSON.stringify(res.data))
-                navitive("/")
+        userService.getAll().then(res => {
+            if (Object.values(res.data).filter(e => e.username = username && e.password == password)[0]) {
+                if (res.data) {
+                    toast.success("Đăng nhập thành công")
+    
+                    sessionStorage.setItem("user", JSON.stringify(Object.values(res.data).filter(e => e.username = username && e.password == password)[0]))
+                    navitive("/")
+                    props.login()
+                }
+                else {
+                    toast.error("Sai mật khẩu hoặc tài khoản không tồn tại")
+                }
             }
-            else {
-                toast.error("Sai mật khẩu")
-            }
-            // localStorage.setItem("user", JSON.stringify(user))
-        }).catch(e => {
-            toast.error("Tài khoản không tồn tại")
-        })
+               
+       })
+       
     }
 
     return (

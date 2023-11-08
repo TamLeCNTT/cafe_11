@@ -17,8 +17,9 @@ const ListProduct = () => {
     useEffect(() => {
         productService.getall().then(res => {
             SetList(res.data.filter(item => item.categoryId == 1))
+            console.log(res.data)
         })
-
+       
 
     }, [])
 
