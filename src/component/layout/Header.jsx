@@ -64,8 +64,7 @@ const Header = (props) => {
                             <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                             <Navbar.Collapse id="responsive-navbar-nav">
                                 <Nav className="me-auto">
-                                    <Nav.Link href="#features" className='test' style={{ "color": "while" }} >Features</Nav.Link>
-                                    <Nav.Link href="#pricing" className='test'>Pricing</Nav.Link>
+                                  
                                     {
                                         users && users.roleId == 1 && (<NavDropdown title="Quản lý" className='test' id="collasible-nav-dropdown">
                                             <NavDropdown.Item className="hover" href="#">
