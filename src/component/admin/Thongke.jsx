@@ -63,7 +63,7 @@ const Thongke = () => {
       "-" +
       (today.getMonth() + 1) +
       "-" +
-      (today.getDate() - 1);
+      (today.getDate() );
     setdate(datenew);
     let lablenew = [];
     let lablenhap = [];
