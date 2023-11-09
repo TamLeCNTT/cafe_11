@@ -160,7 +160,8 @@ const Thongke = () => {
             err => {
                 cashService.getbyday(datenew).then(
                     res => {
-                         let newarry=[]
+                        let newarry = []
+                        if (res.data)
                         Object.values(res.data).map((item, index) => {
                             console.log(item.data)
                             newarry.push(...item.data)
@@ -237,6 +238,7 @@ const Thongke = () => {
                 cashService.getbyday(datenew).then(
                     ress => {
                         let newarry = []
+                        if (ress.data)
                         Object.values(ress.data).map((item, index) => {
                             console.log(item.data)
                             newarry.push(...item.data)
