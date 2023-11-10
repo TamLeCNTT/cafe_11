@@ -77,7 +77,9 @@ const Home = () => {
         OderFireBaseService.getAll().then((res) => {
           let newarry = [];
          if (res.data)
-           Object.values(res.data).map((item, index) => {
+           Object.values(res.data).filter((element) => {
+            return element !== null && element !== undefined;
+          }).map((item, index) => {
             console.log(item.data);
             newarry.push(...item.data);
           });
