@@ -72,6 +72,7 @@ const Home = () => {
       .catch((err) => {
         setinfirebaese(true);
         productService.getAllfirebase().then((res) => {
+          console.log(Object.values(res.data));
           setopt(Object.values(res.data));
         });
         OderFireBaseService.getAll().then((res) => {
