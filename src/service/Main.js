@@ -1,6 +1,6 @@
 import axios from "axios";
 const URL =
-  "https://crud-hungthinh-default-rtdb.asia-southeast1.firebasedatabase.app";
+  "https://hungthinh-373da-default-rtdb.asia-southeast1.firebasedatabase.app";
 const axiosClient = axios.create({
   baseURL: URL,
   headers: {
