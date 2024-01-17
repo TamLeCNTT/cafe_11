@@ -340,8 +340,13 @@ const Home = () => {
 
     OderFireBaseService.getAll().then((res) => {
       let listOlder = [];
-      listOlder =res.data
-        ? Object.values(res.data).filter((e) => (e.id = ms.ban))[0].data
+      listOlder = res.data
+        ? Object.values(res.data).filter((e) => e != null && e.id == ms.ban)
+            .length > 0
+          ? Object.values(res.data).filter(
+              (e) => e != null && e.id == ms.ban
+            )[0].data
+          : []
         : [];
       listoffirebane.map((item, index) => {
         let vt = listOlder.findIndex((e) => e.productId == item.productId);
@@ -401,6 +406,9 @@ const Home = () => {
       });
       oderService.delete(item.oderId).then((r) => {
         sockets.emit("chat messages", ms);
+      });
+      OderFireBaseService.delete({ id: table, data: {} }).then((res) => {
+        console.log("hehehe");
       });
       let sanpham = findproduct(item.productId);
       if (sanpham.categoryId == 1) {
