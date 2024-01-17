@@ -59,6 +59,12 @@ const Thongke = () => {
       navitive("/");
       toast.error("Bạn không có quyền truy cập");
     }
+    if (users)
+    setTimeout(() => {
+      sessionStorage.clear();
+      props.logout();
+      console.log("xoa");
+    }, 600000);
     let today = new Date();
     let datenew =
       today.getFullYear() +
