@@ -11,7 +11,7 @@ import odersaveService from "../service/odersaveService";
 import Print from "./support/Print";
 import OderFireBaseService from "../service/OderFireBaseService";
 import cashService from "../service/cashService";
-
+import { connect } from "react-redux";
 const Home = () => {
   const sockets = socketClient("http://192.168.1.39:3001");
   let flag = 1;
@@ -39,6 +39,12 @@ const Home = () => {
     : null;
 
   useEffect(() => {
+    if (users)
+    setTimeout(() => {
+      sessionStorage.clear();
+      props.logout();
+      console.log("xoa");
+    }, 600000);
     let lst = listoder,
       ltt = [],
       listshows = [];
@@ -334,7 +340,7 @@ const Home = () => {
 
     OderFireBaseService.getAll().then((res) => {
       let listOlder = [];
-      listOlder = Object.values(res.data).filter((e) => e.id == table)[0]
+      listOlder =res.data
         ? Object.values(res.data).filter((e) => (e.id = ms.ban))[0].data
         : [];
       listoffirebane.map((item, index) => {
@@ -784,4 +790,17 @@ const Home = () => {
   );
 };
 
-export default Home;
+const mapStateToProps = (state) => {
+  return { dataRedux: state }
+}
+
+
+const mapDispatchToProps = (dispatch) => {
+  return {
+      logout: () => dispatch({ type: 'LOGOUT' }),
+      addcart: (e) => dispatch({ type: 'ADDCART', payload: e }),
+  }
+}
+
+
+export default connect(mapStateToProps, mapDispatchToProps) (Home);

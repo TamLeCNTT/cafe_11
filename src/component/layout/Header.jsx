@@ -86,7 +86,7 @@ const Header = (props) => {
                                 <Nav>
                                     {
                                         users ?
-                                        <NavLink className="test" onClick={()=>logOut()}>
+                                        <NavLink className="test"to={"/"} onClick={()=>logOut()}>
                                         Đăng xuất
                                             </NavLink>
                                             :

@@ -53,10 +53,12 @@ const Thongke = () => {
     current.getMonth() + 1
   }-${current.getDate()}`;
   // const [year, setyear] = useState(thisYear);
-  const users = localStorage.getItem("users")
-    ? JSON.parse(localStorage.getItem("users"))
-    : null;
+  const users = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
   useEffect(() => {
+    if (!users || users.roleId != 1) {
+      navitive("/");
+      toast.error("Bạn không có quyền truy cập");
+    }
     let today = new Date();
     let datenew =
       today.getFullYear() +

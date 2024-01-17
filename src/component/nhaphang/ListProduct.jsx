@@ -12,9 +12,13 @@ const ListProduct = () => {
     const [list, SetList] = useState([])
 
     const [lists, setLists] = useState([])
-
+    const users = sessionStorage.getItem('user') ? JSON.parse(sessionStorage.getItem('user')) : null;
 
     useEffect(() => {
+        if (!users || users.roleId != 1) {
+            navitive("/");
+            toast.error("Bạn không có quyền truy cập");
+          }
         productService.getall().then(res => {
             SetList(res.data.filter(item => item.categoryId == 1))
             console.log(res.data)
